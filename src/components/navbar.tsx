@@ -10,10 +10,10 @@ export default function Navbar() {
 
       <ul className="flex items-center gap-3">
         <li>
-          <Button variant={'secondary'}>Reserve</Button>
+          <Button variant={'secondary'}>Contact</Button>
         </li>
         <li>
-          <Button>Contact</Button>
+          <Button>Reserver</Button>
         </li>
       </ul>
     </header>

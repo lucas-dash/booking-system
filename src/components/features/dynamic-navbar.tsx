@@ -2,7 +2,7 @@ import { Button } from '../ui/button';
 
 export default function DynamicNavbar() {
   return (
-    <nav className="bg-accent rounded-full h-14 max-w-[280px] w-full flex items-center overflow-hidden fixed bottom-20 sm:top-10 left-1/2 -translate-x-1/2 z-50">
+    <nav className="bg-accent rounded-full h-14 max-w-[280px] w-full flex items-center overflow-hidden fixed bottom-20 sm:top-10 left-1/2 -translate-x-1/2 z-50 px-2">
       <ul className="flex items-center w-full">
         <li>
           <Button variant={'ghost'} className="font-semibold text-base">

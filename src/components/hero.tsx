@@ -13,11 +13,11 @@ export default function Hero() {
 
       <div className="bg-gray-900/70 sm:hidden absolute inset-0"></div>
 
-      <section className="w-full h-full flex items-center justify-center max-sm:hidden">
+      <section className="w-full h-full flex items-center justify-center max-sm:hidden rounded-r-2xl overflow-hidden">
         <img
           src="/src/assets/cottage.WEBP"
           alt="our cottage"
-          className="object-cover w-full h-full rounded-r-2xl"
+          className="object-cover w-full h-full"
         />
       </section>
     </section>
