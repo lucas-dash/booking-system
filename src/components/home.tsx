@@ -1,4 +1,5 @@
 import Hero from './hero';
+import Place from './place';
 import Reservation from './reservation';
 import Rooms from './rooms';
 
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       <Rooms />
       <Reservation />
+      <Place />
     </main>
   );
 }

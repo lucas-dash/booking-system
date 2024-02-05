@@ -13,7 +13,7 @@ export default function Navbar() {
           <Button variant={'secondary'}>Contact</Button>
         </li>
         <li>
-          <Button>Reserver</Button>
+          <Button>Reserve</Button>
         </li>
       </ul>
     </header>

@@ -9,48 +9,143 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      reservation: {
+      guests: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          guest_id: string
+          last_name: string
+          phone_number: number
+        }
+        Insert: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          guest_id?: string
+          last_name?: string
+          phone_number: number
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          guest_id?: string
+          last_name?: string
+          phone_number?: number
+        }
+        Relationships: []
+      }
+      reservations: {
         Row: {
           check_in: string
           check_out: string
           created_at: string
-          id: string
+          guest_id: string
+          guests_count: number
+          reservation_id: string
           room_id: string
+          status: string
+          total_price: number
         }
         Insert: {
           check_in: string
           check_out: string
           created_at?: string
-          id?: string
+          guest_id: string
+          guests_count?: number
+          reservation_id?: string
           room_id: string
+          status?: string
+          total_price?: number
         }
         Update: {
           check_in?: string
           check_out?: string
           created_at?: string
-          id?: string
+          guest_id?: string
+          guests_count?: number
+          reservation_id?: string
           room_id?: string
+          status?: string
+          total_price?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "reservations_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["guest_id"]
+          },
+          {
+            foreignKeyName: "reservations_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["room_id"]
+          }
+        ]
       }
-      todos: {
+      reviews: {
         Row: {
-          checked: boolean | null
+          comment: string | null
           created_at: string
-          id: string
-          name: string | null
+          guest_id: string
+          rating: number
+          review_id: string
         }
         Insert: {
-          checked?: boolean | null
+          comment?: string | null
           created_at?: string
-          id?: string
-          name?: string | null
+          guest_id: string
+          rating: number
+          review_id?: string
         }
         Update: {
-          checked?: boolean | null
+          comment?: string | null
           created_at?: string
-          id?: string
-          name?: string | null
+          guest_id?: string
+          rating?: number
+          review_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_guest_id_fkey"
+            columns: ["guest_id"]
+            isOneToOne: false
+            referencedRelation: "guests"
+            referencedColumns: ["guest_id"]
+          }
+        ]
+      }
+      rooms: {
+        Row: {
+          availbility: boolean
+          created_at: string
+          info: string
+          price_per_day: number
+          room_id: string
+          room_number: number
+          room_type: string
+        }
+        Insert: {
+          availbility: boolean
+          created_at?: string
+          info?: string
+          price_per_day: number
+          room_id?: string
+          room_number: number
+          room_type?: string
+        }
+        Update: {
+          availbility?: boolean
+          created_at?: string
+          info?: string
+          price_per_day?: number
+          room_id?: string
+          room_number?: number
+          room_type?: string
         }
         Relationships: []
       }

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../supabase/client';
 
 const getReservation = async () => {
-  const { data, error } = await supabase.from('reservation').select();
+  const { data, error } = await supabase.from('reservations').select();
   if (error) {
     throw new Error(error.message);
   }
@@ -15,7 +15,7 @@ const getReservation = async () => {
 };
 export default function useReservation() {
   return useQuery({
-    queryKey: ['reservation'],
+    queryKey: ['reservations'],
     queryFn: () => getReservation(),
   });
 }

@@ -1,40 +1,20 @@
-import { FormEvent, useEffect, useState } from 'react';
-import { DatePickerWithRange } from './ui/DatePickerWithRange';
-import { Button } from './ui/button';
-import useReservation from '@/lib/hooks/useReservation';
-
-type ExtractedDates = {
-  check_in: string;
-  check_out: string;
-};
+import ReservationCard from './features/reservation-card';
 
 export default function Reservation() {
-  const [unavailableDays, setUnavailableDays] = useState<ExtractedDates[]>([
-    { check_in: '', check_out: '' },
-  ]);
-  const { data } = useReservation();
-
-  useEffect(() => {
-    if (data) {
-      const extractedDates = data.map(({ check_in, check_out }) => ({
-        check_in,
-        check_out,
-      }));
-      setUnavailableDays(extractedDates);
-    }
-  }, [data]);
-
-  function submit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log(e);
-  }
   return (
-    <div>
-      <h3>Reserve you day</h3>
-      <form onSubmit={submit}>
-        <DatePickerWithRange bookedRanges={unavailableDays} />
-        <Button type="submit">Submit</Button>
-      </form>
-    </div>
+    <section className="grid sm:grid-cols-[1fr_0.7fr] gap-5 px-1 sm:px-5 lg:container py-10">
+      <article className="">
+        <p>
+          Holiday Hill is a comfortable cottage with a fully equipped kitchen,
+          living room bedroom and apartment (for children), where our guests
+          will find everything they need to relax and rest in the forests and
+          meadows of the Sumava Forest. The cottage has two terraces, surrounded
+          by a garden of 1500 m, in which everyone will find space to relax.
+          Another attraction in the garden is the POOL and SAUNA (reservation
+          and extra charge).
+        </p>
+      </article>
+      <ReservationCard />
+    </section>
   );
 }
