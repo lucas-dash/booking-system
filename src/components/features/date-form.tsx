@@ -21,10 +21,17 @@ import {
 import DateRangePicker from './date-range-picker';
 import ContactDialog from './contact-dialog';
 import { useState } from 'react';
-// import { format } from 'date-fns';
+import { useReservationStore } from '@/store/reservation-store';
+import { format } from 'date-fns';
 
 export default function DateForm() {
   const [openDialog, setOpenDialog] = useState(false);
+  const setDateRange = useReservationStore((state) => state.setDateRange);
+  const setGuests = useReservationStore((state) => state.setGuests);
+
+  function close() {
+    setOpenDialog(false);
+  }
 
   const form = useForm<z.infer<typeof bookingSchema>>({
     resolver: zodResolver(bookingSchema),
@@ -34,19 +41,19 @@ export default function DateForm() {
         to: new Date(),
       },
       guests: '1',
-      room: undefined,
     },
   });
 
   function onSubmit(values: z.infer<typeof bookingSchema>) {
-    // todo set values to global state
-    if (values.room) {
-      console.log(values);
+    const range = {
+      from: format(values.date.from, 'yyy-MM-dd'),
+      to: format(values.date.to, 'yyy-MM-dd'),
+    };
 
-      // Number(values.guests);
-      // format(values.date.from, 'yyyy-MM-dd')
-      setOpenDialog(true);
-    }
+    setDateRange(range);
+    setGuests(Number(values.guests));
+
+    setOpenDialog(true);
   }
 
   return (
@@ -56,35 +63,15 @@ export default function DateForm() {
 
         <FormField
           control={form.control}
-          name="room"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Room</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Room" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="1">3 Beds, 1 Kitchen</SelectItem>
-                  <SelectItem value="2">4 Beds, 1 Kitchen</SelectItem>
-                  <SelectItem value="3">4 Beds, 2 Kitchen</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name="guests"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Guests</FormLabel>
               <Select
-                onValueChange={field.onChange}
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  // handleGuestsChange(value);
+                }}
                 defaultValue={String(field.value)}
               >
                 <FormControl>
@@ -104,7 +91,7 @@ export default function DateForm() {
             </FormItem>
           )}
         />
-        <ContactDialog open={openDialog} close={setOpenDialog} />
+        <ContactDialog open={openDialog} close={close} />
       </form>
     </Form>
   );

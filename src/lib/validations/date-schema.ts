@@ -10,7 +10,10 @@ export const bookingSchema = z.object({
     .refine(
       (data) => data.from > addDays(new Date(), -1),
       'Start date must be in the future'
+    )
+    .refine(
+      (data) => data.from && data.to,
+      'Both start and end dates must be selected'
     ),
   guests: z.string(),
-  room: z.string(),
 });

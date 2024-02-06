@@ -13,8 +13,27 @@ import {
 } from '@/components/ui/form';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { useReservationStore } from '@/store/reservation-store';
+import { useMutation } from '@tanstack/react-query';
+import { insertReservation } from '@/lib/queries/insert-reservation';
+import { InsertType } from '@/lib/types/reservations-type';
+import { Loader2 } from 'lucide-react';
+import { useTotalPriceStore } from '@/store/total-price-store';
 
 export default function GuestForm() {
+  const reservation = useReservationStore((state) => ({
+    check_in: state.check_in,
+    check_out: state.check_out,
+    guests_count: state.guests_count,
+  }));
+  const totalPrice = useTotalPriceStore((state) => state.total);
+
+  const { isPending, mutate } = useMutation({
+    mutationKey: ['confirmReservation'],
+    mutationFn: async (reservationData: InsertType) =>
+      await insertReservation(reservationData),
+  });
+
   const form = useForm<z.infer<typeof guestSchema>>({
     resolver: zodResolver(guestSchema),
     defaultValues: {
@@ -26,8 +45,14 @@ export default function GuestForm() {
   });
 
   function onSubmit(values: z.infer<typeof guestSchema>) {
-    // todo insert to database all info and dates on signle hook
-    console.log(values);
+    if (reservation) {
+      try {
+        const combinedData = { ...reservation, ...values, totalPrice };
+        mutate(combinedData);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   }
 
   return (
@@ -111,8 +136,8 @@ export default function GuestForm() {
             </FormItem>
           )}
         />
-
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full flex items-center">
+          {isPending && <Loader2 className="mr-1 animate-spin" />}
           Confirm Reservation
         </Button>
       </form>

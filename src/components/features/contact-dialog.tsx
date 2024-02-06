@@ -11,14 +11,14 @@ import GuestForm from './guest-form';
 
 interface DialogFormProps {
   open: boolean;
-  close: React.Dispatch<React.SetStateAction<boolean>>;
+  close: () => void;
 }
 
 export default function ContactDialog({ open, close }: DialogFormProps) {
   // todo handle dialog close ofter resolve reservation
 
   return (
-    <Dialog open={open} onOpenChange={() => close(false)}>
+    <Dialog open={open} onOpenChange={close}>
       <DialogTrigger asChild>
         <Button className="w-full" type="submit">
           Reserve

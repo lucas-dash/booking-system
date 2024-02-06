@@ -6,45 +6,20 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
-      guests: {
-        Row: {
-          created_at: string
-          email: string
-          first_name: string
-          guest_id: string
-          last_name: string
-          phone_number: number
-        }
-        Insert: {
-          created_at?: string
-          email?: string
-          first_name?: string
-          guest_id?: string
-          last_name?: string
-          phone_number: number
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          first_name?: string
-          guest_id?: string
-          last_name?: string
-          phone_number?: number
-        }
-        Relationships: []
-      }
       reservations: {
         Row: {
           check_in: string
           check_out: string
           created_at: string
-          guest_id: string
+          email: string
+          first_name: string
           guests_count: number
+          last_name: string
+          phone: string
           reservation_id: string
-          room_id: string
           status: string
           total_price: number
         }
@@ -52,10 +27,12 @@ export interface Database {
           check_in: string
           check_out: string
           created_at?: string
-          guest_id: string
+          email?: string
+          first_name?: string
           guests_count?: number
+          last_name?: string
+          phone?: string
           reservation_id?: string
-          room_id: string
           status?: string
           total_price?: number
         }
@@ -63,65 +40,52 @@ export interface Database {
           check_in?: string
           check_out?: string
           created_at?: string
-          guest_id?: string
+          email?: string
+          first_name?: string
           guests_count?: number
+          last_name?: string
+          phone?: string
           reservation_id?: string
-          room_id?: string
           status?: string
           total_price?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "reservations_guest_id_fkey"
-            columns: ["guest_id"]
-            isOneToOne: false
-            referencedRelation: "guests"
-            referencedColumns: ["guest_id"]
-          },
-          {
-            foreignKeyName: "reservations_room_id_fkey"
-            columns: ["room_id"]
-            isOneToOne: false
-            referencedRelation: "rooms"
-            referencedColumns: ["room_id"]
-          }
-        ]
+        Relationships: []
       }
       reviews: {
         Row: {
           comment: string | null
           created_at: string
-          guest_id: string
           rating: number
+          reservation_id: string | null
           review_id: string
         }
         Insert: {
           comment?: string | null
           created_at?: string
-          guest_id: string
           rating: number
+          reservation_id?: string | null
           review_id?: string
         }
         Update: {
           comment?: string | null
           created_at?: string
-          guest_id?: string
           rating?: number
+          reservation_id?: string | null
           review_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "reviews_guest_id_fkey"
-            columns: ["guest_id"]
+            foreignKeyName: "reviews_reservation_id_fkey"
+            columns: ["reservation_id"]
             isOneToOne: false
-            referencedRelation: "guests"
-            referencedColumns: ["guest_id"]
+            referencedRelation: "reservations"
+            referencedColumns: ["reservation_id"]
           }
         ]
       }
       rooms: {
         Row: {
-          availbility: boolean
+          clean_fee: number
           created_at: string
           info: string
           price_per_day: number
@@ -130,7 +94,7 @@ export interface Database {
           room_type: string
         }
         Insert: {
-          availbility: boolean
+          clean_fee?: number
           created_at?: string
           info?: string
           price_per_day: number
@@ -139,7 +103,7 @@ export interface Database {
           room_type?: string
         }
         Update: {
-          availbility?: boolean
+          clean_fee?: number
           created_at?: string
           info?: string
           price_per_day?: number

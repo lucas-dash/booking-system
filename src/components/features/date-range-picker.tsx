@@ -15,6 +15,8 @@ import { Calendar } from '../ui/calendar';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { Control } from 'react-hook-form';
+import { parseDate } from '@/lib/helper-func';
+import { useTotalPriceStore } from '@/store/total-price-store';
 
 type ExtractedDates = {
   check_in: string;
@@ -29,7 +31,6 @@ interface DateRangePickerProps {
           to: Date;
         };
         guests: string;
-        room: string;
       }>
     | undefined;
 }
@@ -39,6 +40,7 @@ export default function DateRangePicker({ formControl }: DateRangePickerProps) {
     { check_in: '', check_out: '' },
   ]);
   const { data } = useReservation();
+  const setDays = useTotalPriceStore((state) => state.setDays);
 
   const bookedDateRanges = unavailableDays?.map((range) => ({
     check_in: parseISO(range.check_in),
@@ -104,7 +106,10 @@ export default function DateRangePicker({ formControl }: DateRangePickerProps) {
                 mode="range"
                 defaultMonth={field.value.from}
                 selected={field.value}
-                onSelect={field.onChange}
+                onSelect={(value) => {
+                  field.onChange(value);
+                  setDays(parseDate(value?.from, value?.to));
+                }}
                 numberOfMonths={2}
                 disabled={isWithinBookedRanges}
               />
