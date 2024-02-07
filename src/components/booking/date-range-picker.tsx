@@ -1,4 +1,3 @@
-import useReservation from '@/lib/hooks/useReservation';
 import { format, isWithinInterval, parseISO } from 'date-fns';
 import { useEffect, useState } from 'react';
 
@@ -10,13 +9,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Loader2 } from 'lucide-react';
 import { Calendar } from '../ui/calendar';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { Control } from 'react-hook-form';
 import { parseDate } from '@/lib/helper-func';
 import { useTotalPriceStore } from '@/store/total-price-store';
+import useRealtime from '@/lib/hooks/useRealtime';
 
 type ExtractedDates = {
   check_in: string;
@@ -39,7 +39,7 @@ export default function DateRangePicker({ formControl }: DateRangePickerProps) {
   const [unavailableDays, setUnavailableDays] = useState<ExtractedDates[]>([
     { check_in: '', check_out: '' },
   ]);
-  const { data } = useReservation();
+  const { isLoading, data } = useRealtime();
   const setDays = useTotalPriceStore((state) => state.setDays);
 
   const bookedDateRanges = unavailableDays?.map((range) => ({
@@ -57,14 +57,14 @@ export default function DateRangePicker({ formControl }: DateRangePickerProps) {
   };
 
   useEffect(() => {
-    if (data) {
-      const extractedDates = data.map(({ check_in, check_out }) => ({
+    if (!isLoading && data) {
+      const extractedDates = data?.map(({ check_in, check_out }) => ({
         check_in,
         check_out,
       }));
       setUnavailableDays(extractedDates);
     }
-  }, [data]);
+  }, [data, isLoading]);
 
   return (
     <FormField
@@ -72,7 +72,10 @@ export default function DateRangePicker({ formControl }: DateRangePickerProps) {
       name="date"
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>Check-In / Check-Out</FormLabel>
+          <FormLabel>
+            Check-In / Check-Out
+            {isLoading && <Loader2 className="ml-1 animate-spin" />}
+          </FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>

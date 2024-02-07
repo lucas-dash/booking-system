@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import Summary from '../booking/summary';
+import Summary from './summary';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { useReservationStore } from '@/store/reservation-store';

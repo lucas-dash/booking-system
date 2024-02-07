@@ -13,7 +13,7 @@ import { calculateTotalPrice, currencyFormat } from '@/lib/helper-func';
 import { useTotalPriceStore } from '@/store/total-price-store';
 import { useEffect } from 'react';
 
-export default function ReservationCard() {
+export default function BookingCard() {
   const { setTotal, days, total } = useTotalPriceStore();
 
   const { isLoading, data } = useQuery({

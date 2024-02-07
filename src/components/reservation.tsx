@@ -1,5 +1,5 @@
-import ContactDialog from './features/contact-dialog';
-import ReservationCard from './features/reservation-card';
+import ContactDialog from './booking/contact-dialog';
+import BookingCard from './booking/booking-card';
 
 export default function Reservation() {
   return (
@@ -16,7 +16,7 @@ export default function Reservation() {
           and extra charge).
         </p>
       </article>
-      <ReservationCard />
+      <BookingCard />
     </section>
   );
 }
