@@ -14,8 +14,7 @@ import { useTotalPriceStore } from '@/store/total-price-store';
 import { useEffect } from 'react';
 
 export default function ReservationCard() {
-  const priceStore = useTotalPriceStore();
-  const setTotal = useTotalPriceStore((state) => state.setTotal);
+  const { setTotal, days, total } = useTotalPriceStore();
 
   const { isLoading, data } = useQuery({
     queryKey: ['roomInfo'],
@@ -23,10 +22,10 @@ export default function ReservationCard() {
   });
 
   useEffect(() => {
-    if (data) {
+    if (!isLoading && data) {
       setTotal(data.price_per_day + data.clean_fee);
     }
-  }, [data, setTotal]);
+  }, [data, setTotal, isLoading]);
 
   return (
     <article>
@@ -59,10 +58,7 @@ export default function ReservationCard() {
           ) : (
             <h5 className="font-semibold text-lg">
               {' '}
-              {`Total: ${calculateTotalPrice(
-                priceStore.total,
-                priceStore.days
-              )}`}
+              {`Total: ${calculateTotalPrice(total, days)}`}
             </h5>
           )}
         </CardFooter>

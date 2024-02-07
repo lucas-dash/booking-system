@@ -19,19 +19,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import DateRangePicker from './date-range-picker';
-import ContactDialog from './contact-dialog';
-import { useState } from 'react';
 import { useReservationStore } from '@/store/reservation-store';
 import { format } from 'date-fns';
+import { useModal } from '@/store/modal';
+import { Button } from '../ui/button';
 
 export default function DateForm() {
-  const [openDialog, setOpenDialog] = useState(false);
-  const setDateRange = useReservationStore((state) => state.setDateRange);
-  const setGuests = useReservationStore((state) => state.setGuests);
-
-  function close() {
-    setOpenDialog(false);
-  }
+  const { openModal } = useModal();
+  const { setDateRange } = useReservationStore();
+  const { setGuests } = useReservationStore();
 
   const form = useForm<z.infer<typeof bookingSchema>>({
     resolver: zodResolver(bookingSchema),
@@ -53,7 +49,7 @@ export default function DateForm() {
     setDateRange(range);
     setGuests(Number(values.guests));
 
-    setOpenDialog(true);
+    openModal();
   }
 
   return (
@@ -68,10 +64,7 @@ export default function DateForm() {
             <FormItem>
               <FormLabel>Guests</FormLabel>
               <Select
-                onValueChange={(value) => {
-                  field.onChange(value);
-                  // handleGuestsChange(value);
-                }}
+                onValueChange={field.onChange}
                 defaultValue={String(field.value)}
               >
                 <FormControl>
@@ -91,7 +84,9 @@ export default function DateForm() {
             </FormItem>
           )}
         />
-        <ContactDialog open={openDialog} close={close} />
+        <Button className="w-full" type="submit">
+          Reserve
+        </Button>
       </form>
     </Form>
   );

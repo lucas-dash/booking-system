@@ -9,12 +9,12 @@ export async function insertReservation({
   lastName,
   email,
   phone,
-  totalPrice,
+  total,
 }: InsertType) {
   const { error } = await supabase.from('reservations').insert({
     check_in,
     check_out,
-    total_price: totalPrice,
+    total_price: total,
     guests_count,
     status: 'pending',
     first_name: firstName,

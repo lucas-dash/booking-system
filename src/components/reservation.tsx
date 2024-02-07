@@ -1,9 +1,11 @@
+import ContactDialog from './features/contact-dialog';
 import ReservationCard from './features/reservation-card';
 
 export default function Reservation() {
   return (
-    <section className="grid sm:grid-cols-[1fr_0.7fr] gap-5 px-1 sm:px-5 lg:container py-10">
-      <article className="">
+    <section className="grid sm:grid-cols-[1fr_0.7fr] gap-5 px-2 sm:px-5 lg:container py-10">
+      <ContactDialog />
+      <article>
         <p>
           Holiday Hill is a comfortable cottage with a fully equipped kitchen,
           living room bedroom and apartment (for children), where our guests

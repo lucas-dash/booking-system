@@ -4,26 +4,14 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from '../ui/button';
 import GuestForm from './guest-form';
+import { useModal } from '@/store/modal';
 
-interface DialogFormProps {
-  open: boolean;
-  close: () => void;
-}
-
-export default function ContactDialog({ open, close }: DialogFormProps) {
-  // todo handle dialog close ofter resolve reservation
-
+export default function ContactDialog() {
+  const { modalState, closeModal } = useModal();
   return (
-    <Dialog open={open} onOpenChange={close}>
-      <DialogTrigger asChild>
-        <Button className="w-full" type="submit">
-          Reserve
-        </Button>
-      </DialogTrigger>
+    <Dialog open={modalState} onOpenChange={closeModal}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Contact Info</DialogTitle>

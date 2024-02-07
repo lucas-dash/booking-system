@@ -1,6 +1,6 @@
 export default function Rooms() {
   return (
-    <section className="px-2 my-5 lg:container">
+    <section className="max-lg:px-2 my-5 lg:container">
       <div className="w-full rounded-full h-12 bg-slate-200 flex items-center justify-center">
         <h2 className="font-semibold text-2xl">Discover Our Rooms</h2>
       </div>

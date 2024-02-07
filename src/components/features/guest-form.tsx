@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import Summary from '../booking/summary';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { useReservationStore } from '@/store/reservation-store';
@@ -19,14 +20,16 @@ import { insertReservation } from '@/lib/queries/insert-reservation';
 import { InsertType } from '@/lib/types/reservations-type';
 import { Loader2 } from 'lucide-react';
 import { useTotalPriceStore } from '@/store/total-price-store';
+import { useModal } from '@/store/modal';
 
 export default function GuestForm() {
+  const { closeModal } = useModal();
+  const { total } = useTotalPriceStore();
   const reservation = useReservationStore((state) => ({
     check_in: state.check_in,
     check_out: state.check_out,
     guests_count: state.guests_count,
   }));
-  const totalPrice = useTotalPriceStore((state) => state.total);
 
   const { isPending, mutate } = useMutation({
     mutationKey: ['confirmReservation'],
@@ -47,10 +50,12 @@ export default function GuestForm() {
   function onSubmit(values: z.infer<typeof guestSchema>) {
     if (reservation) {
       try {
-        const combinedData = { ...reservation, ...values, totalPrice };
+        const combinedData = { ...reservation, ...values, total };
         mutate(combinedData);
       } catch (e) {
         console.log(e);
+      } finally {
+        closeModal();
       }
     }
   }
@@ -136,6 +141,8 @@ export default function GuestForm() {
             </FormItem>
           )}
         />
+        <Summary time={reservation} />
+
         <Button type="submit" className="w-full flex items-center">
           {isPending && <Loader2 className="mr-1 animate-spin" />}
           Confirm Reservation

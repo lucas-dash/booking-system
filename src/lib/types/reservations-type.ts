@@ -6,5 +6,5 @@ export type InsertType = {
   check_in: string;
   check_out: string;
   guests_count: number;
-  totalPrice: number;
+  total: number;
 };
