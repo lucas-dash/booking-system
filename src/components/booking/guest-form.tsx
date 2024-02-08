@@ -21,21 +21,27 @@ import { InsertType } from '@/lib/types/reservations-type';
 import { Loader2 } from 'lucide-react';
 import { useTotalPriceStore } from '@/store/total-price-store';
 import { useModal } from '@/store/modal';
+import { useToast } from '../ui/use-toast';
 
 export default function GuestForm() {
-  const { closeModal } = useModal();
   const { total } = useTotalPriceStore();
+  const { toast } = useToast();
+  const { closeModal } = useModal();
   const reservation = useReservationStore((state) => ({
     check_in: state.check_in,
     check_out: state.check_out,
     guests_count: state.guests_count,
   }));
 
-  const { isPending, mutate } = useMutation({
+  const { isPending, mutate, error } = useMutation({
     mutationKey: ['confirmReservation'],
     mutationFn: async (reservationData: InsertType) =>
       await insertReservation(reservationData),
   });
+
+  if (error) {
+    toast({ variant: 'destructive', title: error?.message });
+  }
 
   const form = useForm<z.infer<typeof guestSchema>>({
     resolver: zodResolver(guestSchema),
@@ -57,6 +63,10 @@ export default function GuestForm() {
         console.log(e);
       } finally {
         closeModal();
+        toast({
+          title: 'Thank you for your reservation!',
+          description: 'We will send you a summary in an email.',
+        });
       }
     }
   }

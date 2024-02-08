@@ -20,7 +20,12 @@ import {
 } from '@/components/ui/select';
 import DateRangePicker from './date-range-picker';
 import { useReservationStore } from '@/store/reservation-store';
-import { format } from 'date-fns';
+import {
+  eachDayOfInterval,
+  format,
+  isWithinInterval,
+  parseISO,
+} from 'date-fns';
 import { useModal } from '@/store/modal';
 import { Button } from '../ui/button';
 import { useEffect, useState } from 'react';
@@ -32,6 +37,7 @@ export default function DateForm() {
   const { setDateRange } = useReservationStore();
   const { setGuests } = useReservationStore();
   const { isLoading, data } = useRealtime();
+  const [error, setError] = useState('');
 
   const [bookedDays, setBookedDays] = useState([
     { check_in: '', check_out: '' },
@@ -49,6 +55,32 @@ export default function DateForm() {
   });
 
   function onSubmit(values: z.infer<typeof bookingSchema>) {
+    const selectedFrom = values.date.from;
+    const selectedTo = values.date.to;
+
+    const unvailableDays = bookedDays.flatMap((booking) =>
+      eachDayOfInterval({
+        start: parseISO(booking.check_in),
+        end: parseISO(booking.check_out),
+      })
+    );
+
+    let isDateUnavailable = false;
+
+    for (const day of unvailableDays) {
+      if (isWithinInterval(day, { start: selectedFrom, end: selectedTo })) {
+        isDateUnavailable = true;
+        break;
+      }
+    }
+
+    if (isDateUnavailable) {
+      setError('Selected dates are already booked');
+      return;
+    } else {
+      setError('');
+    }
+
     const range = {
       from: format(values.date.from, 'yyy-MM-dd'),
       to: format(values.date.to, 'yyy-MM-dd'),
@@ -112,6 +144,7 @@ export default function DateForm() {
             </FormItem>
           )}
         />
+        {error && <p className="text-red-500 font-medium text-sm">{error}</p>}
         <Button className="w-full" type="submit">
           Reserve
         </Button>

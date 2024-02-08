@@ -12,14 +12,19 @@ import { getRoomInfo } from '@/lib/queries/get-room-info';
 import { calculateTotalPrice, currencyFormat } from '@/lib/helper-func';
 import { useTotalPriceStore } from '@/store/total-price-store';
 import { useEffect } from 'react';
+import { toast } from '../ui/use-toast';
 
 export default function BookingCard() {
   const { setTotal, days, total } = useTotalPriceStore();
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, error } = useQuery({
     queryKey: ['roomInfo'],
     queryFn: async () => await getRoomInfo(),
   });
+
+  if (error) {
+    toast({ variant: 'destructive', title: error?.message });
+  }
 
   useEffect(() => {
     if (!isLoading && data) {
