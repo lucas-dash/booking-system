@@ -14,6 +14,11 @@ export const bookingSchema = z.object({
     .refine(
       (data) => data.from && data.to,
       'Both start and end dates must be selected'
+    )
+    .refine(
+      (data) =>
+        !(data.from && data.to && data.from.getTime() === data.to.getTime()),
+      'Start and end dates cannot be the same'
     ),
   guests: z.string(),
 });

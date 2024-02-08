@@ -25,13 +25,13 @@ export default function Summary({ time }: SummaryProps) {
         <h5 className="font-medium font-">
           Check-In:{' '}
           <span className="font-normal">
-            {format(time.check_in, 'PP')} 14:00
+            {format(time.check_in, 'd LLL y')} 14:00
           </span>
         </h5>
         <h5 className="font-medium font-">
           Check-Out:{' '}
           <span className="font-normal">
-            {format(time.check_out, 'PP')} 11:00
+            {format(time.check_out, 'd LLL y')} 11:00
           </span>
         </h5>
       </div>

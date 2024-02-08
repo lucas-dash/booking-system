@@ -48,6 +48,7 @@ export default function GuestForm() {
   });
 
   function onSubmit(values: z.infer<typeof guestSchema>) {
+    // check availability
     if (reservation) {
       try {
         const combinedData = { ...reservation, ...values, total };

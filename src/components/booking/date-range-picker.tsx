@@ -1,5 +1,4 @@
-import { format, isWithinInterval, parseISO } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { format, parseISO } from 'date-fns';
 
 import {
   FormControl,
@@ -9,14 +8,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { CalendarIcon, Loader2 } from 'lucide-react';
+import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '../ui/calendar';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { Control } from 'react-hook-form';
 import { parseDate } from '@/lib/helper-func';
 import { useTotalPriceStore } from '@/store/total-price-store';
-import useRealtime from '@/lib/hooks/useRealtime';
 
 type ExtractedDates = {
   check_in: string;
@@ -33,38 +31,21 @@ interface DateRangePickerProps {
         guests: string;
       }>
     | undefined;
+  unavailableDays: ExtractedDates[];
 }
 
-export default function DateRangePicker({ formControl }: DateRangePickerProps) {
-  const [unavailableDays, setUnavailableDays] = useState<ExtractedDates[]>([
-    { check_in: '', check_out: '' },
-  ]);
-  const { isLoading, data } = useRealtime();
-  const setDays = useTotalPriceStore((state) => state.setDays);
+export default function DateRangePicker({
+  formControl,
+  unavailableDays,
+}: DateRangePickerProps) {
+  const { setDays } = useTotalPriceStore();
 
   const bookedDateRanges = unavailableDays?.map((range) => ({
-    check_in: parseISO(range.check_in),
-    check_out: parseISO(range.check_out),
+    from: parseISO(range.check_in),
+    to: parseISO(range.check_out),
   }));
 
-  const isWithinBookedRanges = (day: Date) => {
-    return bookedDateRanges?.some((range) => {
-      const startDate = range.check_in;
-      const endDate = range.check_out;
-
-      return isWithinInterval(day, { start: startDate, end: endDate });
-    });
-  };
-
-  useEffect(() => {
-    if (!isLoading && data) {
-      const extractedDates = data?.map(({ check_in, check_out }) => ({
-        check_in,
-        check_out,
-      }));
-      setUnavailableDays(extractedDates);
-    }
-  }, [data, isLoading]);
+  const disabledDays = [{ before: new Date() }, ...bookedDateRanges];
 
   return (
     <FormField
@@ -72,10 +53,7 @@ export default function DateRangePicker({ formControl }: DateRangePickerProps) {
       name="date"
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>
-            Check-In / Check-Out
-            {isLoading && <Loader2 className="ml-1 animate-spin" />}
-          </FormLabel>
+          <FormLabel>Check-In / Check-Out</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -114,7 +92,7 @@ export default function DateRangePicker({ formControl }: DateRangePickerProps) {
                   setDays(parseDate(value?.from, value?.to));
                 }}
                 numberOfMonths={2}
-                disabled={isWithinBookedRanges}
+                disabled={disabledDays}
               />
             </PopoverContent>
           </Popover>

@@ -23,11 +23,19 @@ import { useReservationStore } from '@/store/reservation-store';
 import { format } from 'date-fns';
 import { useModal } from '@/store/modal';
 import { Button } from '../ui/button';
+import { useEffect, useState } from 'react';
+import useRealtime from '@/lib/hooks/useRealtime';
+import { Skeleton } from '../ui/skeleton';
 
 export default function DateForm() {
   const { openModal } = useModal();
   const { setDateRange } = useReservationStore();
   const { setGuests } = useReservationStore();
+  const { isLoading, data } = useRealtime();
+
+  const [bookedDays, setBookedDays] = useState([
+    { check_in: '', check_out: '' },
+  ]);
 
   const form = useForm<z.infer<typeof bookingSchema>>({
     resolver: zodResolver(bookingSchema),
@@ -52,10 +60,30 @@ export default function DateForm() {
     openModal();
   }
 
+  useEffect(() => {
+    if (!isLoading && data) {
+      const booked = data?.map(({ check_in, check_out }) => {
+        return {
+          check_in: check_in,
+          check_out: check_out,
+        };
+      });
+
+      setBookedDays(booked);
+    }
+  }, [data, form, isLoading]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <DateRangePicker formControl={form.control} />
+        {isLoading ? (
+          <Skeleton className="w-full h-10 rounded-xl" />
+        ) : (
+          <DateRangePicker
+            formControl={form.control}
+            unavailableDays={bookedDays}
+          />
+        )}
 
         <FormField
           control={form.control}
