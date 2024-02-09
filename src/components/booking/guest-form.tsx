@@ -22,16 +22,22 @@ import { Loader2 } from 'lucide-react';
 import { useTotalPriceStore } from '@/store/total-price-store';
 import { useModal } from '@/store/modal';
 import { useToast } from '../ui/use-toast';
+import useRealtime from '@/lib/hooks/useRealtime';
+import { isWithinInterval, parseISO } from 'date-fns';
+import { useState } from 'react';
 
 export default function GuestForm() {
-  const { total } = useTotalPriceStore();
+  const total = useTotalPriceStore((state) => state.total);
   const { toast } = useToast();
-  const { closeModal } = useModal();
+  const [alreadyBooked, setAlreadyBooked] = useState(false);
+  const closeModal = useModal((state) => state.closeModal);
   const reservation = useReservationStore((state) => ({
     check_in: state.check_in,
     check_out: state.check_out,
     guests_count: state.guests_count,
   }));
+
+  const { data } = useRealtime();
 
   const { isPending, mutate, error } = useMutation({
     mutationKey: ['confirmReservation'],
@@ -53,9 +59,20 @@ export default function GuestForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof guestSchema>) {
-    // check availability
-    if (reservation) {
+  async function onSubmit(values: z.infer<typeof guestSchema>) {
+    const isNotAvailable = data?.some(({ check_in, check_out }) => {
+      return isWithinInterval(reservation.check_in, {
+        start: parseISO(check_in),
+        end: parseISO(check_out),
+      });
+    });
+
+    if (isNotAvailable) {
+      setAlreadyBooked(true);
+    }
+
+    if (reservation && !isNotAvailable) {
+      setAlreadyBooked(false);
       try {
         const combinedData = { ...reservation, ...values, total };
         mutate(combinedData);
@@ -63,6 +80,7 @@ export default function GuestForm() {
         console.log(e);
       } finally {
         closeModal();
+        form.reset();
         toast({
           title: 'Thank you for your reservation!',
           description: 'We will send you a summary in an email.',
@@ -152,6 +170,11 @@ export default function GuestForm() {
             </FormItem>
           )}
         />
+        {alreadyBooked && (
+          <p className="text-red-500 font-medium text-sm">
+            Dates are already booked!
+          </p>
+        )}
         <Summary time={reservation} />
 
         <Button type="submit" className="w-full flex items-center">
