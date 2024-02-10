@@ -21,7 +21,7 @@ const config = {
       colors: {
         primary: '#FCFCFC',
         secondary: '#17181D',
-        accent: '#42B238',
+        accent: '#597E52',
       },
       backgroundImage: {
         'mobile-pattern': "url('/src/assets/cottage.WEBP')",

@@ -6,7 +6,8 @@ export default function Rooms() {
   const ref = useRef(null);
   const isInView = useInView(ref, {
     amount: 'some',
-    margin: '0px 200px 0px 0px',
+    // margin: '0px -350px -300px 0px',
+    margin: '-40%',
   });
 
   const setActive = useNavStore((state) => state.setActive);

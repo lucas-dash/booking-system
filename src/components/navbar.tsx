@@ -1,5 +1,6 @@
 import { BedDouble } from 'lucide-react';
 import { Button } from './ui/button';
+import { Link } from 'react-scroll';
 
 export default function Navbar() {
   return (
@@ -10,10 +11,34 @@ export default function Navbar() {
 
       <ul className="flex items-center gap-3">
         <li>
-          <Button variant={'secondary'}>Contact</Button>
+          <Button variant={'secondary'} asChild>
+            <Link
+              to={'Contact'}
+              spy={true}
+              offset={-100}
+              smooth={true}
+              duration={600}
+              aria-label="scroll to section"
+              role="button"
+            >
+              Contact
+            </Link>
+          </Button>
         </li>
         <li>
-          <Button>Reserve</Button>
+          <Button asChild>
+            <Link
+              to={'Reservation'}
+              spy={true}
+              offset={-100}
+              smooth={true}
+              duration={600}
+              aria-label="scroll to section"
+              role="button"
+            >
+              Reserve
+            </Link>
+          </Button>
         </li>
       </ul>
     </header>

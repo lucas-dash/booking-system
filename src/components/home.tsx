@@ -1,15 +1,21 @@
+import { Suspense, lazy } from 'react';
 import Hero from './hero';
-import Place from './place';
-import Reservation from './reservation';
 import Rooms from './rooms';
+import ReservationSkeleton from './ui/skeleton/reservation-skeleton';
+
+const ReservationLazy = lazy(() => import('./reservation'));
+const PlaceLazy = lazy(() => import('./place'));
 
 export default function Home() {
   return (
     <main className="min-h-screen text-secondary">
       <Hero />
       <Rooms />
-      <Reservation />
-      <Place />
+
+      <Suspense fallback={<ReservationSkeleton />}>
+        <ReservationLazy />
+        <PlaceLazy />
+      </Suspense>
     </main>
   );
 }
