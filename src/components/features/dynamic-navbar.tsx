@@ -2,6 +2,7 @@ import { Button } from '../ui/button';
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import { useNavStore } from '@/store/navStore';
 import { useState } from 'react';
+import { Link } from 'react-scroll';
 
 export default function DynamicNavbar() {
   const { active, setActive } = useNavStore();
@@ -37,8 +38,19 @@ export default function DynamicNavbar() {
                   variant={'ghost'}
                   onClick={() => setActive(item)}
                   className="font-semibold text-base rounded-full"
+                  asChild
                 >
-                  {item}
+                  <Link
+                    to={item}
+                    spy={true}
+                    offset={-100}
+                    smooth={true}
+                    duration={600}
+                    aria-label="scroll to section"
+                    role="button"
+                  >
+                    {item}
+                  </Link>
                 </Button>
                 {item === active && (
                   <motion.span
