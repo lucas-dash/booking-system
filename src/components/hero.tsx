@@ -1,8 +1,26 @@
+import { useNavStore } from '@/store/navStore';
 import Testimonials from './features/testimonials';
+import { useInView } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
 export default function Hero() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { amount: 'some' });
+
+  const setActive = useNavStore((state) => state.setActive);
+
+  useEffect(() => {
+    if (isInView) {
+      setActive('Hero');
+    }
+  }, [isInView, setActive]);
+
   return (
-    <section className="min-h-screen grid sm:grid-cols-2 max-sm:bg-mobile-pattern p-3">
+    <section
+      id="Hero"
+      ref={ref}
+      className="min-h-screen grid sm:grid-cols-2 max-sm:bg-mobile-pattern p-3"
+    >
       <article className="z-10 flex flex-col items-center justify-around mt-20">
         <h1 className="text-4xl sm:text-5xl font-semibold max-sm:text-primary p-4 max-sm:text-center">
           Reserve Your Ideal Holiday

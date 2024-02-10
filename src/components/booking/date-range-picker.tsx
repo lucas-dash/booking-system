@@ -41,7 +41,7 @@ export default function DateRangePicker({ formControl }: DateRangePickerProps) {
     { check_in: '', check_out: '' },
   ]);
   const { isLoading, data } = useRealtime();
-  const { setDays } = useTotalPriceStore();
+  const setDays = useTotalPriceStore((state) => state.setDays);
 
   useEffect(() => {
     if (data) {

@@ -1,6 +1,24 @@
+import { useNavStore } from '@/store/navStore';
+import { useInView } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+
 export default function Rooms() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    amount: 'some',
+    margin: '0px 200px 0px 0px',
+  });
+
+  const setActive = useNavStore((state) => state.setActive);
+
+  useEffect(() => {
+    if (isInView) {
+      setActive('Rooms');
+    }
+  }, [isInView, setActive]);
+
   return (
-    <section className="max-lg:px-2 my-5 lg:container">
+    <section id="Rooms" ref={ref} className="max-lg:px-2 my-5 lg:container">
       <div className="w-full rounded-full h-12 bg-slate-200 flex items-center justify-center">
         <h2 className="font-semibold text-2xl">Discover Our Rooms</h2>
       </div>
