@@ -33,7 +33,7 @@ export default function BookingCard() {
   }, [data, setTotal, isLoading]);
 
   return (
-    <article>
+    <article className="w-full">
       <Card className="rounded-2xl">
         <CardHeader>
           <CardTitle className="flex items-center">

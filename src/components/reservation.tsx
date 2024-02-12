@@ -7,8 +7,7 @@ import { useInView } from 'framer-motion';
 export default function Reservation() {
   const ref = useRef(null);
   const isInView = useInView(ref, {
-    amount: 'some',
-    margin: '-40%',
+    amount: 0.2,
   });
 
   const setActive = useNavStore((state) => state.setActive);
@@ -21,13 +20,13 @@ export default function Reservation() {
 
   return (
     <section
-      className="grid sm:grid-cols-[1fr_0.7fr] gap-10 sm:gap-5 px-2 sm:px-5 lg:container my-20 min-h-[60dvh] items-center"
+      className="grid sm:grid-cols-[1fr_minmax(300px,_0.8fr)] lg:grid-cols-[1fr_minmax(300px,_0.7fr)] gap-10 sm:gap-5 max-lg:px-2 lg:container min-h-[70dvh] items-center max-sm:my-20"
       id="Reservation"
       ref={ref}
     >
       <ContactDialog />
       <article className="px-5">
-        <p className="text-lg">
+        <p className="text-lg max-md:text-center">
           Holiday Hill is a comfortable cottage with a fully equipped kitchen,
           living room bedroom and apartment (for children), where our guests
           will find everything they need to relax and rest in the forests and

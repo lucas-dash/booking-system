@@ -6,6 +6,6 @@ type Nav = {
 };
 
 export const useNavStore = create<Nav>()((set) => ({
-  active: 'Hero',
+  active: '',
   setActive: (section) => set(() => ({ active: section })),
 }));

@@ -4,7 +4,7 @@ import Rooms from './rooms';
 import ReservationSkeleton from './ui/skeleton/reservation-skeleton';
 
 const ReservationLazy = lazy(() => import('./reservation'));
-const PlaceLazy = lazy(() => import('./place'));
+const FooterLazy = lazy(() => import('./footer'));
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
 
       <Suspense fallback={<ReservationSkeleton />}>
         <ReservationLazy />
-        <PlaceLazy />
+        <FooterLazy />
       </Suspense>
     </main>
   );

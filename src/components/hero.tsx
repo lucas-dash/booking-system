@@ -1,25 +1,27 @@
-import { useNavStore } from '@/store/navStore';
+import { Link } from 'react-scroll';
 import Testimonials from './features/testimonials';
-import { useInView } from 'framer-motion';
+import { Button } from './ui/button';
 import { useEffect, useRef } from 'react';
+import { useInView } from 'framer-motion';
+import { useNavStore } from '@/store/navStore';
 
 export default function Hero() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 'some' });
+  const isInView = useInView(ref, {
+    amount: 0.8,
+  });
 
   const setActive = useNavStore((state) => state.setActive);
 
   useEffect(() => {
     if (isInView) {
-      setActive('Hero');
+      setActive('');
     }
   }, [isInView, setActive]);
-
   return (
     <section
-      id="Hero"
+      className="min-h-[100dvh] grid sm:grid-cols-2 max-sm:bg-mobile-pattern p-3"
       ref={ref}
-      className="min-h-screen grid sm:grid-cols-2 max-sm:bg-mobile-pattern p-3"
     >
       <article className="z-10 flex flex-col items-center justify-evenly mt-20 max-sm:mb-20">
         <h1 className="text-4xl sm:text-5xl font-semibold max-sm:text-primary p-4 max-sm:text-center">
@@ -27,6 +29,34 @@ export default function Hero() {
         </h1>
 
         <Testimonials />
+        <div className="flex items-center gap-4">
+          <Button variant={'secondary'} asChild>
+            <Link
+              to={'Contact'}
+              spy={true}
+              offset={-100}
+              smooth={true}
+              duration={600}
+              aria-label="scroll to section"
+              role="button"
+            >
+              Contact
+            </Link>
+          </Button>
+          <Button asChild>
+            <Link
+              to={'Reservation'}
+              spy={true}
+              offset={-100}
+              smooth={true}
+              duration={600}
+              aria-label="scroll to section"
+              role="button"
+            >
+              Reserve
+            </Link>
+          </Button>
+        </div>
       </article>
 
       <div className="bg-gray-900/70 sm:hidden absolute inset-0"></div>
