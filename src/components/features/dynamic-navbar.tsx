@@ -10,7 +10,7 @@ export default function DynamicNavbar() {
 
   return (
     <nav
-      className={`bg-accent rounded-full h-14 w-max flex items-center overflow-hidden fixed bottom-20 sm:top-10 left-1/2 -translate-x-1/2 z-50 px-2 
+      className={`bg-accent rounded-full h-14 w-max flex items-center overflow-hidden fixed bottom-14 sm:top-10 left-1/2 -translate-x-1/2 z-50 px-2 
       `}
     >
       <motion.div
