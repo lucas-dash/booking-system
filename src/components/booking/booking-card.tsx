@@ -57,7 +57,7 @@ export default function BookingCard() {
         </CardContent>
         <CardFooter className="flex flex-col items-start gap-4">
           <p>Cleaning Fee: {currencyFormat(data?.clean_fee || 0)}</p>
-          {/* separator */}
+          <hr className="w-full" />
           {isLoading ? (
             <div className="animate-ping w-3 h-3 rounded-full bg-secondary"></div>
           ) : (

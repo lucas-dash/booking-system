@@ -25,7 +25,7 @@ export default function DynamicNavbar() {
               <motion.li key={index} className="relative" layout>
                 <Button
                   variant={'ghost'}
-                  className="font-semibold text-base rounded-full"
+                  className="font-semibold text-base rounded-full max-[365px]:px-1.5"
                   asChild
                 >
                   <Link

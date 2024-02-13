@@ -27,9 +27,9 @@ import { isWithinInterval, parseISO } from 'date-fns';
 import { useState } from 'react';
 
 export default function GuestForm() {
+  const [alreadyBooked, setAlreadyBooked] = useState(false);
   const total = useTotalPriceStore((state) => state.total);
   const { toast } = useToast();
-  const [alreadyBooked, setAlreadyBooked] = useState(false);
   const closeModal = useModal((state) => state.closeModal);
   const reservation = useReservationStore((state) => ({
     check_in: state.check_in,
@@ -175,6 +175,7 @@ export default function GuestForm() {
             Dates are already booked!
           </p>
         )}
+
         <Summary time={reservation} />
 
         <Button type="submit" className="w-full flex items-center">

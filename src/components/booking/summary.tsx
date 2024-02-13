@@ -14,7 +14,8 @@ export default function Summary({ time }: SummaryProps) {
   const { total, days } = useTotalPriceStore();
   return (
     <article>
-      <h3 className="font-semibold">Summary:</h3>
+      <h3 className="font-semibold">Summary</h3>
+      <hr className="w-full" />
       <div className="flex flex-col gap-2 pt-2">
         <h5 className="font-medium font-">
           Total:{' '}
@@ -23,13 +24,13 @@ export default function Summary({ time }: SummaryProps) {
           </span>
         </h5>
         <h5 className="font-medium font-">
-          Check-In:{' '}
+          Check In:{' '}
           <span className="font-normal">
             {format(time.check_in, 'd LLL y')} 14:00
           </span>
         </h5>
         <h5 className="font-medium font-">
-          Check-Out:{' '}
+          Check Out:{' '}
           <span className="font-normal">
             {format(time.check_out, 'd LLL y')} 11:00
           </span>
