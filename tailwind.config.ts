@@ -24,7 +24,7 @@ const config = {
         accent: '#597E52',
       },
       backgroundImage: {
-        'mobile-pattern': "url('/src/assets/cottage.WEBP')",
+        'mobile-pattern': "url('./cottage.WEBP')",
       },
       keyframes: {
         'accordion-down': {

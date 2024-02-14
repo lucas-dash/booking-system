@@ -63,7 +63,7 @@ export default function Hero() {
 
       <section className="w-full h-full flex items-center justify-center max-sm:hidden rounded-r-2xl overflow-hidden">
         <img
-          src="/src/assets/cottage.WEBP"
+          src="./cottage.WEBP"
           alt="our cottage"
           className="object-cover w-full h-full"
         />

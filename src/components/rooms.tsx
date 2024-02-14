@@ -26,7 +26,7 @@ export default function Rooms() {
         <section className="flex flex-col gap-2 max-h-[1200px]">
           <div className="rounded-2xl overflow-hidden h-full">
             <img
-              src="/src/assets/room2.WEBP"
+              src="./room2.WEBP"
               alt="first room"
               className="w-full h-full object-cover"
             />
@@ -60,7 +60,7 @@ export default function Rooms() {
 
       <div className="rounded-2xl overflow-hidden mt-2 max-h-[700px]">
         <img
-          src="/src/assets/room1.WEBP"
+          src="./room1.WEBP"
           alt="third room"
           className="w-full h-full object-cover aspect-video"
         />
